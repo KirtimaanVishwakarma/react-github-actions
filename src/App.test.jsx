@@ -12,7 +12,7 @@ describe('App', () => {
     render(<App />)
 
     expect(
-      screen.getByRole('heading', { level: 1, name: 'Hello, Kirtimaan!' }),
+      screen.getByRole('heading', { level: 1, name: 'Hello, React!' }),
     ).toBeInTheDocument()
   })
 })
