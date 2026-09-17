@@ -47,6 +47,11 @@ jobs:
   build-job:
     needs: [lint-job, test-job]
     runs-on: ubuntu-latest
+
+    env:
+      VERCEL_ORG_ID: ${{secrets.VERCEL_ORG_ID}}
+      VERCEL_PROJECT_ID: ${{secrets.VERCEL_PROJECT_ID}}
+
     steps:
         - name: Checkout Code
           uses: actions/checkout@v4
@@ -69,16 +74,22 @@ jobs:
             name: react-build
             path: dist/
             retention-days: 7
-        
-  deployment-job:
-    needs: [build-job]
-    runs-on: ubuntu-latest
-    steps:
-        - name: Checkout Code
-          uses: actions/checkout@v4
 
         - name: Install Vercel CLI
           run: npm install -g vercel
         
         - name: Vercel Deployment
-          run: vercel --prod --yes --token="${{secrets.VERCEL_TOKEN}}"
+          run: vercel deploy dist --prod --yes --token="${{secrets.VERCEL_TOKEN}}"
+        
+  # deployment-job:
+  #   needs: [build-job]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #       - name: Checkout Code
+  #         uses: actions/checkout@v4
+
+  #       - name: Install Vercel CLI
+  #         run: npm install -g vercel
+        
+  #       - name: Vercel Deployment
+  #         run: vercel --prod --yes --token="${{secrets.VERCEL_TOKEN}}"
